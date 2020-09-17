@@ -66,6 +66,7 @@
                             <th>Shift Type</th>
                             <th>Shift Leader</th>
                             <th>Outstanding Items</th>
+                            <th>Update</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -78,6 +79,9 @@
                             <td><?php echo $Rec['ShiftType']?></td>
                             <td><?php echo $Rec['ShiftLeaderName']?></td>
                             <td><?php echo $Rec['Count_DoneIndicator']?></td>
+                            <td><a class="btn btn-info"
+                                    href="handover.php?DATE=<?= $Rec['ShiftCalendarDate']?>&SHIFT=<?=$Rec['ShiftType']?>">UPDATE</a>
+                            </td>
                         </tr>
                         <?php
                         }
@@ -89,16 +93,17 @@
                             <th>Shift Type</th>
                             <th>Shift Leader</th>
                             <th>Outstanding Items</th>
+                            <th>Update</th>
                         </tr>
                     </tfoot>
                 </table>
                 <!-- Table End -->
             </div>
         </div>
+        <button class="btn btn-outline-info btn-lg form-control" onclick="document.location.href='completed.php'">
+            Completed ShiftLeader Handovers</button><br>
         <button class="btn btn-outline-primary btn-lg form-control"
             onclick="document.location.href='index.php'">Home</button><br><br>
-        <button class="btn btn-outline-info btn-lg form-control" onclick="document.location.href='summaryAll.php'">
-            See Closed ShiftLeader Handover</button>
         <!-- Form Summary -->
         <br><br>
         <!-- Main Content Start-->

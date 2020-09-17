@@ -43,9 +43,19 @@
         }
 
         #SQL Connect
-        $sql = "SELECT top 100 * 
-                FROM vItemsPerShiftOutstanding
-                WHERE Count_DoneIndicator > 0";
+        $sql = "SELECT
+                    tHandoverResults.ShiftCalendarDate,
+                    tHandoverResults.ShiftType,
+                    tHandoverResults.ShiftLeaderName
+                From
+                    tHandoverResults
+                where
+                    tHandoverResults.DoneIndicator = '-1'
+                Group By
+                    tHandoverResults.ShiftCalendarDate, tHandoverResults.ShiftType,
+                    tHandoverResults.ShiftLeaderName, tHandoverResults.DoneIndicator
+                having
+                    Count(tHandoverResults.DoneIndicator) = Count(tHandoverResults.ItemNumber);";
         $sqlargs = array();
         require_once 'config/db_query.php'; 
         $Delays =  sqlQuery($sql,$sqlargs);
@@ -65,7 +75,7 @@
                             <th>Shift Date</th>
                             <th>Shift Type</th>
                             <th>Shift Leader</th>
-                            <th>Outstanding Items</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -77,7 +87,9 @@
                             <td><?php echo $Rec['ShiftCalendarDate'] ?></td>
                             <td><?php echo $Rec['ShiftType']?></td>
                             <td><?php echo $Rec['ShiftLeaderName']?></td>
-                            <td><?php echo $Rec['Count_DoneIndicator']?></td>
+                            <td><a class="btn btn-info"
+                                    href="viewhandover.php?DATE=<?= $Rec['ShiftCalendarDate']?>&SHIFT=<?=$Rec['ShiftType']?>">REVIEW</a>
+                            </td>
                         </tr>
                         <?php
                         }
@@ -88,7 +100,7 @@
                             <th>Shift Date</th>
                             <th>Shift Type</th>
                             <th>Shift Leader</th>
-                            <th>Outstanding Items</th>
+                            <th>Action</th>
                         </tr>
                     </tfoot>
                 </table>

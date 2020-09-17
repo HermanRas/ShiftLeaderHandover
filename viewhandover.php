@@ -7,15 +7,8 @@
     $ItemNumber = '';
     $ShiftLeaderName = '';
     $DoneIndicator =  '';
-    $Comment = '';
+    $Comments = '';
     $LogonUser = $_SERVER['AUTH_USER'];
-
-    //Item Type
-    $sql = "SELECT [SecSLH].[dbo].[tItemListing].* from [SecSLH].[dbo].[tItemListing]";
-    $sqlargs = array();
-    require_once 'config/db_query.php'; 
-    $Items =  sqlQuery($sql,$sqlargs);
-    $Items = $Items[0];
 
 ########################################################################
 ## Edit Load Data
@@ -52,73 +45,6 @@
         $Items =  sqlQuery($sql,$sqlargs);
         $Items = $Items[0];
     }
-########################################################################
-## SAVE OR UPDATE
-########################################################################
-if (isset($_POST['Save'])){
-    ########################################################################
-    ## SAVE NEW
-    ########################################################################
-    if(isset($_POST['Save']) && !isset($_GET['DATE']) && !isset($_GET['SHIFT'])){
-        $ShiftCalendarDate = $_POST["StartDate"];
-        $ShiftType = $_POST["ShiftType"];
-        $ShiftLeaderName = $_POST["ShiftLeaderName"];
-        $ItemNumbers = $_POST["ItemNumber"];
-        $DoneIndicators = $_POST["Done"];
-        $Comments = $_POST["Comment"];
-
-        for ($i=0; $i < count($ItemNumbers); $i++) { 
-                $ItemNumber = $ItemNumbers[$i];
-                $DoneIndicator = $DoneIndicators[$i];
-                $Comment = $Comments[$i];
-                $sql = "INSERT INTO tHandoverResults 
-                        (ShiftCalendarDate, ShiftType ,ItemNumber ,ShiftLeaderName ,DoneIndicator ,Comments ,LogonUser)
-                        VALUES('$ShiftCalendarDate', '$ShiftType' ,'$ItemNumber' ,'$ShiftLeaderName' ,'$DoneIndicator' ,'$Comment' ,'$LogonUser');";
-                $sqlargs = array();
-                require_once 'config/db_query.php';
-                $DBIns =  sqlQuery($sql,$sqlargs);
-        }
-
-        // echo "<script> document.location.href='index.php' </script>";
-        die;
-    }
-    ########################################################################
-    ## UPDATE
-    ########################################################################
-    if(isset($_POST['Save']) && isset($_GET['DATE']) && isset($_GET['SHIFT'])){
-        $ShiftCalendarDate = $_POST["StartDate"];
-        $ShiftType = $_POST["ShiftType"];
-        $ShiftLeaderName = $_POST["ShiftLeaderName"];
-        $ItemNumbers = $_POST["ItemNumber"];
-        $DoneIndicators = $_POST["Done"];
-        $Comments = $_POST["Comment"];
-
-        for ($i=0; $i < count($ItemNumbers); $i++) { 
-                $ItemNumber = $ItemNumbers[$i];
-                $DoneIndicator = $DoneIndicators[$i];
-                $Comment = $Comments[$i];
-                $sql = "UPDATE tHandoverResults 
-                        SET 
-                        ShiftCalendarDate = '$ShiftCalendarDate' ,
-                        ShiftType = '$ShiftType' ,
-                        ItemNumber = $ItemNumber,
-                        ShiftLeaderName = '$ShiftLeaderName' ,
-                        DoneIndicator = '$DoneIndicator',
-                        Comments = '$Comment',
-                        LogonUser = '$LogonUser'
-                        where ItemNumber = $ItemNumber
-                        and ShiftCalendarDate = '$ShiftCalendarDate'
-                        and ShiftType = '$ShiftType';";
-                $sqlargs = array();
-                require_once 'config/db_query.php';
-                $DBUpd =  sqlQuery($sql,$sqlargs);
-        }
-
-        echo "<script> document.location.href='index.php' </script>";
-        die;
-    }
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -174,20 +100,16 @@ if (isset($_POST['Save'])){
                             ?>
                             <label for="StartDate">Shift Date</label>
                             <input type="date" class="form-control" id="StartDate" name="StartDate"
-                                value="<?=$ShiftCalendarDate?>" required>
+                                value="<?=$ShiftCalendarDate?>" disabled>
                         </div>
                         <div class="form-group col-md-4">
                             <label for="ShiftType">Shift Type</label>
-                            <select type="text" class="form-control" id="ShiftType" name="ShiftType" required>
+                            <select type="text" class="form-control" id="ShiftType" name="ShiftType" disabled>
                                 <?php 
                                     if (isset($Items[0]['ShiftType'])) {
                                         echo'<option value="'.$Items[0]['ShiftType'].'">'.$Items[0]['ShiftType'].'</option>';
                                     }
                                  ?>
-                                <option value="">Please Select</option>
-                                <option value="DAY">DAY</option>
-                                <option value="AFTERNOON">AFTERNOON</option>
-                                <option value="NIGHT">NIGHT</option>
                             </select>
                         </div>
                         <div class="form-group col-md-4">
@@ -198,7 +120,7 @@ if (isset($_POST['Save'])){
                             ?>
                             <label for="Equipment">ShiftLeader Name</label>
                             <input class="form-control" type="text" name="ShiftLeaderName" placeholder="your Name..."
-                                value="<?=$ShiftLeaderName?>" required>
+                                value="<?=$ShiftLeaderName?>" disabled>
                         </div>
                     </div>
                     <hr>
@@ -220,7 +142,7 @@ if (isset($_POST['Save'])){
                         <div class="form-group col-md-1">
                             <label for="ItemNumber">Number</label>
                             <input type="text" class="form-control" name="ItemNumber[<?=$i?>]"
-                                value="<?=$Item["ItemNumber"]?>" readonly>
+                                value="<?=$Item["ItemNumber"]?>" disabled>
                         </div>
                         <div class="form-group col-md-2">
                             <label for="TaskDeterminations">Task Determinations</label>
@@ -251,7 +173,7 @@ if (isset($_POST['Save'])){
                         </div>
                         <div class="form-group col-md-2">
                             <label for="Done">Done ?</label>
-                            <select class="form-control" id="Done" name="Done[<?=$i?>]">
+                            <select class="form-control" id="Done" name="Done[<?=$i?>]" disabled>
                                 <?php 
                                     if (isset($Item['DoneIndicator'])) {
                                         if ($Item['DoneIndicator']=== "-1"){
@@ -262,9 +184,6 @@ if (isset($_POST['Save'])){
                                         }
                                     }
                                 ?>
-                                <option value="">Please Select</option>
-                                <option value="-1">YES</option>
-                                <option value="0">NO</option>
                             </select>
                         </div>
                         <div class="form-group col-md-5">
@@ -274,7 +193,8 @@ if (isset($_POST['Save'])){
                                 }
                             ?>
                             <label for="Comment">Comment</label>
-                            <input type="text" class="form-control" name="Comment[<?=$i?>]" value="<?=$Comment?>">
+                            <input type="text" class="form-control" name="Comment[<?=$i?>]" value="<?=$Comment?>"
+                                disabled>
                         </div>
                     </div>
                     <hr>
@@ -286,16 +206,8 @@ if (isset($_POST['Save'])){
                     <input type="hidden" class="form-control" name="completed" id="completed" value="0">
                     <hr>
                     <div class="row my-3">
-                        <div class="col-4">
-                            <button class="btn btn-outline-danger btn-lg form-control"
-                                onclick="document.location.href='index.php'">Cancel</button>
-                        </div>
-                        <div class="col-4">
-                            <button class="btn btn-outline-info btn-lg form-control" id="Save" name="Save">Save</button>
-                        </div>
-                        <div class="col-4">
-                            <a class="btn btn-outline-success btn-lg form-control"
-                                onclick="checkCompleted()">Finalize</a>
+                        <div class="col-12">
+                            <a class="btn btn-outline-primary btn-lg form-control" href="index.php">Home</a>
                         </div>
                     </div>
                 </form>
@@ -314,34 +226,6 @@ if (isset($_POST['Save'])){
     <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <!-- end of Bootstrap JS -->
-
-    <!-- Page Specific JS -->
-    <script>
-    function checkCompleted() {
-        let requiredFields = document.querySelectorAll("#Done");
-        requiredFields.forEach(item => {
-            if (item.value === '') {
-                item.classList.add("is-invalid");
-            } else {
-                item.classList.remove("is-invalid");
-            }
-        });
-        let faults = document.querySelectorAll(".is-invalid");
-        if (faults.length === 0) {
-            document.getElementById("completed").value = 1;
-            document.getElementById("Save").click();
-        } else {
-            faults[0].focus();
-        }
-    }
-
-    function setYes() {
-        let requiredFields = document.querySelectorAll("#Done");
-        requiredFields.forEach(item => {
-            item.value = "-1";
-        })
-    };
-    </script>
 </body>
 
 </html>

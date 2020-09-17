@@ -44,9 +44,9 @@
             </div>
 
             <div class="text-center d-flex flex-column justify-content-center text-light p-5">
-                <button class="btn btn-outline-primary btn-lg my-2" onclick="document.location.href='new.php'">
+                <button class="btn btn-outline-primary btn-lg my-2" onclick="document.location.href='handover.php'">
                     New HandOver</button>
-                <button class="btn btn-outline-primary btn-lg my-2" onclick="document.location.href='summary.php'">
+                <button class="btn btn-outline-primary btn-lg my-2" onclick="document.location.href='outstanding.php'">
                     Update HandOver</button>
                 <button class="btn btn-outline-primary btn-lg my-2" onclick="document.location.href='#'">Admin
                     Settings</button>
