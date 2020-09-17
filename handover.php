@@ -79,7 +79,7 @@ if (isset($_POST['Save'])){
                 $DBIns =  sqlQuery($sql,$sqlargs);
         }
 
-        // echo "<script> document.location.href='index.php' </script>";
+        echo "<script> document.location.href='index.php' </script>";
         die;
     }
     ########################################################################
@@ -163,8 +163,8 @@ if (isset($_POST['Save'])){
                 New Handover
             </div>
             <div class="card-body">
+                <div class="text-center" id="err"> </div>
                 <form method="POST" id="frmMain">
-
                     <div class="form-row">
                         <div class="form-group col-md-4">
                             <?php 
@@ -174,11 +174,12 @@ if (isset($_POST['Save'])){
                             ?>
                             <label for="StartDate">Shift Date</label>
                             <input type="date" class="form-control" id="StartDate" name="StartDate"
-                                value="<?=$ShiftCalendarDate?>" required>
+                                value="<?=$ShiftCalendarDate?>" onchange="dateCheck()" required>
                         </div>
                         <div class="form-group col-md-4">
                             <label for="ShiftType">Shift Type</label>
-                            <select type="text" class="form-control" id="ShiftType" name="ShiftType" required>
+                            <select type="text" class="form-control" id="ShiftType" name="ShiftType"
+                                onchange="dateCheck()" required>
                                 <?php 
                                     if (isset($Items[0]['ShiftType'])) {
                                         echo'<option value="'.$Items[0]['ShiftType'].'">'.$Items[0]['ShiftType'].'</option>';
@@ -313,6 +314,7 @@ if (isset($_POST['Save'])){
     <script src="js/jquery-3.3.1.slim.min.js"></script>
     <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/dateCheck.js"></script>
     <!-- end of Bootstrap JS -->
 
     <!-- Page Specific JS -->
