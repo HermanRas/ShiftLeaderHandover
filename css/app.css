@@ -1,0 +1,16 @@
+label{
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.form-group{
+    margin-bottom: 0px;
+}
+
+.form-control{
+    font-size: 12px;
+}
+
+select.form-control{
+    max-height: 32px;
+}
