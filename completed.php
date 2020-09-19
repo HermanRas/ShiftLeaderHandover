@@ -43,19 +43,7 @@
         }
 
         #SQL Connect
-        $sql = "SELECT
-                    tHandoverResults.ShiftCalendarDate,
-                    tHandoverResults.ShiftType,
-                    tHandoverResults.ShiftLeaderName
-                From
-                    tHandoverResults
-                where
-                    tHandoverResults.DoneIndicator = '-1'
-                Group By
-                    tHandoverResults.ShiftCalendarDate, tHandoverResults.ShiftType,
-                    tHandoverResults.ShiftLeaderName, tHandoverResults.DoneIndicator
-                having
-                    Count(tHandoverResults.DoneIndicator) = Count(tHandoverResults.ItemNumber);";
+        $sql = "SELECT * from [vCompletedShifts]";
         $sqlargs = array();
         require_once 'config/db_query.php'; 
         $Delays =  sqlQuery($sql,$sqlargs);
