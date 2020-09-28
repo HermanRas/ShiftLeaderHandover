@@ -49,8 +49,25 @@
                     New HandOver</button>
                 <button class="btn btn-outline-primary btn-lg my-2" onclick="document.location.href='outstanding.php'">
                     Update HandOver</button>
-                <button class="btn btn-outline-primary btn-lg my-2" onclick="document.location.href='#'">Admin
-                    Settings</button>
+
+                <?php
+                $logonUID =  $_SERVER['AUTH_USER'];
+                $sql = "SELECT * from [SecSLH].[dbo].[tEmailRecipient]
+                        where LoginUserName = '$logonUID'
+                        AND Admin = 1";
+                $sqlargs = array();
+                require_once 'config/db_query.php'; 
+                $UID =  sqlQuery($sql,$sqlargs);
+                $UID = $UID[1];
+                if ($UID === 1){
+                ?>
+                <button class="btn btn-outline-primary btn-lg my-2"
+                    onclick="document.location.href='settings.php'">Admin
+                    Settings
+                </button>
+                <?php
+                }
+                ?>
             </div>
         </section>
 

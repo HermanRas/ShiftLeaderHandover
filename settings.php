@@ -28,24 +28,20 @@
         <nav class="navbar navbar-dark bg-dark rounded">
             <a class="navbar-brand" href="index.php">
                 <img src="img/icon.png" width="30" height="30" class="d-inline-block align-top bg-white rounded" alt="">
-                
+
             </a>
         </nav>
         <!-- NAV END -->
 
         <!-- Main Content Start-->
         <br>
-        <?php require_once("_setting_eqt.php");?>
+        <?php require_once("_setting_admins.php");?>
         <br>
-        <?php require_once("_setting_eq.php");?>
+        <?php require_once("_setting_Frequency.php");?>
         <br>
-        <?php require_once("_setting_com.php");?>
+        <?php require_once("_setting_priority.php");?>
         <br>
-        <?php require_once("_setting_dis.php");?>
-        <br>
-        <?php require_once("_setting_fail.php");?>
-        <br>
-
+        <?php require_once("_setting_questions.php");?>
         <div class="row my-3">
             <div class="col-12">
                 <button class="btn btn-outline-primary btn-lg form-control"
